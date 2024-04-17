@@ -8,40 +8,51 @@ import ColumnGroup from 'primevue/columngroup' // optional
 import Row from 'primevue/row' // optional
 import Button from 'primevue/button'
 
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
-const selectedFees = ref({ text: '钢琴幼儿30分钟', price: 8250 })
+const selectedFeesType = ref('乐器')
+const selectedFees = ref({})
+
+const feesType = ref(['乐器', '声乐', '舞蹈', '语言', '画画', '空手道'])
 
 const fees = ref([
-  { text: '钢琴幼儿30分钟', price: 8250 },
-  { text: '钢琴初级60分钟', price: 15400 },
-  { text: '钢琴中级60分钟', price: 17050 },
-  { text: '钢琴高级30分钟', price: 10560 },
-  { text: '钢琴高级60分钟', price: 19250 },
-  { text: '架子鼓小组课', price: 13200 },
-  { text: '架子鼓一对一', price: 17512 },
-  { text: '吉他一对一', price: 17512 },
-  { text: '古筝一对一', price: 17512 },
-  { text: '声乐', price: 22000 },
-  { text: '街舞60分钟', price: 7480 },
-  { text: '街舞90分钟', price: 8580 },
-  { text: '爵士舞60分钟', price: 7480 },
-  { text: '爵士舞90分钟', price: 8580 },
-  { text: '中国舞60分钟', price: 6380 },
-  { text: '中国舞90分钟', price: 7480 },
-  { text: '拉丁舞60分钟', price: 7480 },
-  { text: '拉丁舞90分钟', price: 8580 },
-  { text: '中文一年级上册', price: 5775 },
-  { text: '中文一年级下册', price: 6600 },
-  { text: '中文二年级以上', price: 7480 },
-  { text: '英语', price: 8580 },
-  { text: '画画60分钟', price: 5500 },
-  { text: '画画大班', price: 7150 },
-  { text: '画画提高班', price: 7700 },
-  { text: '画画一对一', price: 17512 },
-  { text: '空手道60分钟', price: 4950 },
-  { text: '空手道90分钟', price: 6050 }
+  { text: '钢琴幼儿30分钟', price: 8250, type: '乐器' },
+  { text: '钢琴初级60分钟', price: 15400, type: '乐器' },
+  { text: '钢琴中级60分钟', price: 17050, type: '乐器' },
+  { text: '钢琴高级30分钟', price: 10560, type: '乐器' },
+  { text: '钢琴高级60分钟', price: 19250, type: '乐器' },
+  { text: '架子鼓小组课', price: 13200, type: '乐器' },
+  { text: '架子鼓一对一', price: 17512, type: '乐器' },
+  { text: '吉他一对一', price: 17512, type: '乐器' },
+  { text: '古筝一对一', price: 17512, type: '乐器' },
+  { text: '声乐', price: 22000, type: '声乐' },
+  { text: '街舞60分钟', price: 7480, type: '舞蹈' },
+  { text: '街舞90分钟', price: 8580, type: '舞蹈' },
+  { text: '爵士舞60分钟', price: 7480, type: '舞蹈' },
+  { text: '爵士舞90分钟', price: 8580, type: '舞蹈' },
+  { text: '中国舞60分钟', price: 6380, type: '舞蹈' },
+  { text: '中国舞90分钟', price: 7480, type: '舞蹈' },
+  { text: '拉丁舞60分钟', price: 7480, type: '舞蹈' },
+  { text: '拉丁舞90分钟', price: 8580, type: '舞蹈' },
+  { text: '中文一年级上册', price: 5775, type: '语言' },
+  { text: '中文一年级下册', price: 6600, type: '语言' },
+  { text: '中文二年级以上', price: 7480, type: '语言' },
+  { text: '英语', price: 8580, type: '语言' },
+  { text: '画画60分钟', price: 5500, type: '画画' },
+  { text: '画画大班', price: 7150, type: '画画' },
+  { text: '画画提高班', price: 7700, type: '画画' },
+  { text: '画画一对一', price: 17512, type: '画画' },
+  { text: '空手道60分钟', price: 4950, type: '空手道' },
+  { text: '空手道90分钟', price: 6050, type: '空手道' }
 ])
+
+const c_fees = computed(() => {
+  return fees.value.filter((fee) => fee.type === selectedFeesType.value)
+})
+
+watch(selectedFeesType, (newValue, oldValue) => {
+  selectedFees.value = {}
+})
 
 const admissionFee = ref(false)
 const materialCosts = ref(false)
@@ -75,9 +86,9 @@ const addAdmissionFee = () => {
     let lesson = {
       id: 98,
       lessonName: '入会费',
-      lessonPrice: 10000,
+      lessonPrice: 11000,
       times: 1,
-      price: 10000
+      price: 11000
     }
     addGridValue(lesson)
   } else {
@@ -94,9 +105,9 @@ const addMaterialCosts = () => {
     let lesson = {
       id: 99,
       lessonName: '材料费',
-      lessonPrice: 10000,
+      lessonPrice: 4378,
       times: 1,
-      price: 10000
+      price: 4378
     }
     addGridValue(lesson)
   } else {
@@ -116,35 +127,47 @@ const addGridValue = (lesson) => {
 <template>
   <main>
     <div class="searchArea">
+      <label>课程类别</label>
+      <Dropdown
+        id="wddLessonType"
+        v-model="selectedFeesType"
+        :options="feesType"
+        placeholder="选择类别"
+      />
+
       <label>课程名</label>
       <Dropdown
         id="wddLesson"
         v-model="selectedFees"
-        :options="fees"
+        :options="c_fees"
         optionLabel="text"
         placeholder="选择课程"
-        inputClass="input"
       />
 
       <label>课程价格</label>
       <span>{{ selectedFees.price }}</span>
 
       <label> 课程回数 </label>
-      <InputNumber type="number" v-model="normalTimes" inputId="normal"></InputNumber>
+      <InputNumber
+        v-model="normalTimes"
+        inputId="normal"
+        inputmode="numeric"
+        locale="jp"
+      ></InputNumber>
 
       <label> 报名回数 </label>
-      <InputNumber v-model="enlistsTimes" inputId="enlists"></InputNumber>
+      <InputNumber
+        v-model="enlistsTimes"
+        inputId="enlists"
+        inputmode="numeric"
+        locale="jp"
+      ></InputNumber>
 
       <label> 休息回数 </label>
-      <InputNumber type="number" v-model="restTimes" inputId="rest"></InputNumber>
+      <InputNumber v-model="restTimes" inputId="rest" inputmode="numeric" locale="jp"></InputNumber>
 
       <label>入会费</label>
-      <InputSwitch
-        type="number"
-        v-model="admissionFee"
-        inputId="admissionFee"
-        @change="addAdmissionFee"
-      />
+      <InputSwitch v-model="admissionFee" inputId="admissionFee" @change="addAdmissionFee" />
 
       <label>材料费</label>
       <InputSwitch v-model="materialCosts" inputId="materialCosts" @change="addMaterialCosts" />
@@ -153,7 +176,6 @@ const addGridValue = (lesson) => {
     </div>
 
     <div class="gridArea">
-      type="number"
       <DataTable :value="lessons" tableStyle="min-width: 40rem">
         <Column field="lessonName" header="课程"></Column>
         <Column field="lessonPrice" header="课程价格"></Column>
