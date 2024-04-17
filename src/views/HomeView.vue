@@ -54,7 +54,7 @@ const totlePrice = computed(() => {
   lessons.value.forEach((lesson) => {
     total += lesson.price
   })
-  return total
+  return total.toLocaleString()
 })
 
 const lessons = ref([])
@@ -130,16 +130,21 @@ const addGridValue = (lesson) => {
       <span>{{ selectedFees.price }}</span>
 
       <label> 课程回数 </label>
-      <InputNumber v-model="normalTimes" inputId="normal"></InputNumber>
+      <InputNumber type="number" v-model="normalTimes" inputId="normal"></InputNumber>
 
       <label> 报名回数 </label>
       <InputNumber v-model="enlistsTimes" inputId="enlists"></InputNumber>
 
       <label> 休息回数 </label>
-      <InputNumber v-model="restTimes" inputId="rest"></InputNumber>
+      <InputNumber type="number" v-model="restTimes" inputId="rest"></InputNumber>
 
       <label>入会费</label>
-      <InputSwitch v-model="admissionFee" inputId="admissionFee" @change="addAdmissionFee" />
+      <InputSwitch
+        type="number"
+        v-model="admissionFee"
+        inputId="admissionFee"
+        @change="addAdmissionFee"
+      />
 
       <label>材料费</label>
       <InputSwitch v-model="materialCosts" inputId="materialCosts" @change="addMaterialCosts" />
@@ -148,6 +153,7 @@ const addGridValue = (lesson) => {
     </div>
 
     <div class="gridArea">
+      type="number"
       <DataTable :value="lessons" tableStyle="min-width: 40rem">
         <Column field="lessonName" header="课程"></Column>
         <Column field="lessonPrice" header="课程价格"></Column>
@@ -203,7 +209,7 @@ main {
 
 .gridArea {
   margin: 0.5em 0.5em;
-  width: 40em;
+  width: 20em;
 }
 
 label {
