@@ -153,6 +153,12 @@ const addGridValue = (lesson) => {
         inputId="normal"
         inputmode="numeric"
         locale="jp"
+        :pt="{
+          input: {
+            inputmode: 'numeric',
+            pattern: '[0-9]*'
+          }
+        }"
       ></InputNumber>
 
       <label> 报名回数 </label>
@@ -161,10 +167,27 @@ const addGridValue = (lesson) => {
         inputId="enlists"
         inputmode="numeric"
         locale="jp"
+        :pt="{
+          input: {
+            inputmode: 'numeric',
+            pattern: '[0-9]*'
+          }
+        }"
       ></InputNumber>
 
       <label> 休息回数 </label>
-      <InputNumber v-model="restTimes" inputId="rest" inputmode="numeric" locale="jp"></InputNumber>
+      <InputNumber
+        v-model="restTimes"
+        inputId="rest"
+        inputmode="numeric"
+        locale="jp"
+        :pt="{
+          input: {
+            inputmode: 'numeric',
+            pattern: '[0-9]*'
+          }
+        }"
+      ></InputNumber>
 
       <label>入会费</label>
       <InputSwitch v-model="admissionFee" inputId="admissionFee" @change="addAdmissionFee" />
