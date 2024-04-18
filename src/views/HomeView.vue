@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Dropdown from 'primevue/dropdown'
 import InputSwitch from 'primevue/inputswitch'
-import InputNumber from 'primevue/inputnumber'
+import InputText from 'primevue/inputtext'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import ColumnGroup from 'primevue/columngroup' // optional
@@ -13,52 +13,138 @@ import { ref, computed, watch } from 'vue'
 const selectedFeesType = ref('乐器')
 const selectedFees = ref({})
 
-const feesType = ref(['乐器', '声乐', '舞蹈', '语言', '画画', '空手道'])
+const feesType = ref([
+  '乐器',
+  '声乐',
+  '舞蹈',
+  '语言',
+  '画画',
+  '空手道',
+  '个人指导120分钟',
+  '个人指导90分钟',
+  '个人指导60分钟'
+])
 
 const fees = ref([
-  { text: '钢琴幼儿30分钟', price: 8250, type: '乐器' },
-  { text: '钢琴初级60分钟', price: 15400, type: '乐器' },
-  { text: '钢琴中级60分钟', price: 17050, type: '乐器' },
-  { text: '钢琴高级30分钟', price: 10560, type: '乐器' },
-  { text: '钢琴高级60分钟', price: 19250, type: '乐器' },
-  { text: '架子鼓小组课', price: 13200, type: '乐器' },
-  { text: '架子鼓一对一', price: 17512, type: '乐器' },
-  { text: '吉他一对一', price: 17512, type: '乐器' },
-  { text: '古筝一对一', price: 17512, type: '乐器' },
-  { text: '声乐', price: 22000, type: '声乐' },
-  { text: '街舞60分钟', price: 7480, type: '舞蹈' },
-  { text: '街舞90分钟', price: 8580, type: '舞蹈' },
-  { text: '爵士舞60分钟', price: 7480, type: '舞蹈' },
-  { text: '爵士舞90分钟', price: 8580, type: '舞蹈' },
-  { text: '中国舞60分钟', price: 6380, type: '舞蹈' },
-  { text: '中国舞90分钟', price: 7480, type: '舞蹈' },
-  { text: '拉丁舞60分钟', price: 7480, type: '舞蹈' },
-  { text: '拉丁舞90分钟', price: 8580, type: '舞蹈' },
-  { text: '中文一年级上册', price: 5775, type: '语言' },
-  { text: '中文一年级下册', price: 6600, type: '语言' },
-  { text: '中文二年级以上', price: 7480, type: '语言' },
-  { text: '英语', price: 8580, type: '语言' },
-  { text: '画画60分钟', price: 5500, type: '画画' },
-  { text: '画画大班', price: 7150, type: '画画' },
-  { text: '画画提高班', price: 7700, type: '画画' },
-  { text: '画画一对一', price: 17512, type: '画画' },
-  { text: '空手道60分钟', price: 4950, type: '空手道' },
-  { text: '空手道90分钟', price: 6050, type: '空手道' }
+  { text: '钢琴幼儿30分钟', price: 7500, type: '乐器' },
+  { text: '钢琴初级60分钟', price: 14000, type: '乐器' },
+  { text: '钢琴中级60分钟', price: 15500, type: '乐器' },
+  { text: '钢琴高级30分钟', price: 9600, type: '乐器' },
+  { text: '钢琴高级60分钟', price: 17500, type: '乐器' },
+  { text: '架子鼓小组课', price: 12000, type: '乐器' },
+  { text: '架子鼓一对一', price: 15920, type: '乐器' },
+  { text: '吉他一对一', price: 15920, type: '乐器' },
+  { text: '古筝一对一', price: 15920, type: '乐器' },
+  { text: '声乐', price: 20000, type: '声乐' },
+  { text: '街舞60分钟', price: 6800, type: '舞蹈' },
+  { text: '街舞90分钟', price: 7800, type: '舞蹈' },
+  { text: '爵士舞60分钟', price: 6800, type: '舞蹈' },
+  { text: '爵士舞90分钟', price: 7800, type: '舞蹈' },
+  { text: '中国舞60分钟', price: 5800, type: '舞蹈' },
+  { text: '中国舞90分钟', price: 6800, type: '舞蹈' },
+  { text: '拉丁舞60分钟', price: 6800, type: '舞蹈' },
+  { text: '拉丁舞90分钟', price: 7800, type: '舞蹈' },
+  { text: '中文一年级上册', price: 5250, type: '语言' },
+  { text: '中文一年级下册', price: 6000, type: '语言' },
+  { text: '中文二年级以上', price: 6800, type: '语言' },
+  { text: '英语', price: 7800, type: '语言' },
+  { text: '画画60分钟', price: 5000, type: '画画' },
+  { text: '画画大班', price: 6500, type: '画画' },
+  { text: '画画提高班', price: 7000, type: '画画' },
+  { text: '画画一对一', price: 15920, type: '画画' },
+  { text: '空手道60分钟', price: 4500, type: '空手道' },
+  { text: '空手道90分钟', price: 5500, type: '空手道' },
+
+  //个人指导 小学生
+  { text: '周1回（幼儿 小学生）', price: 16000, type: '个人指导120分钟' },
+  { text: '周2回（幼儿 小学生）', price: 31200, type: '个人指导120分钟' },
+  { text: '周3回（幼儿 小学生）', price: 45600, type: '个人指导120分钟' },
+  { text: '周4回（幼儿 小学生）', price: 59200, type: '个人指导120分钟' },
+  { text: '周5回（幼儿 小学生）', price: 72000, type: '个人指导120分钟' },
+
+  { text: '周1回（幼儿 小学生）', price: 12300, type: '个人指导90分钟' },
+  { text: '周2回（幼儿 小学生）', price: 24000, type: '个人指导90分钟' },
+  { text: '周3回（幼儿 小学生）', price: 35100, type: '个人指导90分钟' },
+  { text: '周4回（幼儿 小学生）', price: 45600, type: '个人指导90分钟' },
+  { text: '周5回（幼儿 小学生）', price: 55500, type: '个人指导90分钟' },
+
+  { text: '周1回（幼儿 小学生）', price: 8400, type: '个人指导60分钟' },
+  { text: '周2回（幼儿 小学生）', price: 17200, type: '个人指导60分钟' },
+  { text: '周3回（幼儿 小学生）', price: 25200, type: '个人指导60分钟' },
+  { text: '周4回（幼儿 小学生）', price: 32800, type: '个人指导60分钟' },
+  { text: '周5回（幼儿 小学生）', price: 40000, type: '个人指导60分钟' },
+
+  //个人指导 中学生
+  { text: '周1回（中学生）', price: 18000, type: '个人指导120分钟' },
+  { text: '周2回（中学生）', price: 36000, type: '个人指导120分钟' },
+  { text: '周3回（中学生）', price: 52800, type: '个人指导120分钟' },
+  { text: '周4回（中学生）', price: 68800, type: '个人指导120分钟' },
+  { text: '周5回（中学生）', price: 84000, type: '个人指导120分钟' },
+
+  { text: '周1回（中学生）', price: 13800, type: '个人指导90分钟' },
+  { text: '周2回（中学生）', price: 27000, type: '个人指导90分钟' },
+  { text: '周3回（中学生）', price: 39600, type: '个人指导90分钟' },
+  { text: '周4回（中学生）', price: 51600, type: '个人指导90分钟' },
+  { text: '周5回（中学生）', price: 63000, type: '个人指导90分钟' },
+
+  { text: '周1回（中学生）', price: 9800, type: '个人指导60分钟' },
+  { text: '周2回（中学生）', price: 19200, type: '个人指导60分钟' },
+  { text: '周3回（中学生）', price: 28200, type: '个人指导60分钟' },
+  { text: '周4回（中学生）', price: 36800, type: '个人指导60分钟' },
+  { text: '周5回（中学生）', price: 45000, type: '个人指导60分钟' },
+
+  //个人指导 高一高二
+  { text: '周1回（高一高二）', price: 19200, type: '个人指导120分钟' },
+  { text: '周2回（高一高二）', price: 37600, type: '个人指导120分钟' },
+  { text: '周3回（高一高二）', price: 55200, type: '个人指导120分钟' },
+  { text: '周4回（高一高二）', price: 72000, type: '个人指导120分钟' },
+  { text: '周5回（高一高二）', price: 88000, type: '个人指导120分钟' },
+
+  { text: '周1回（高一高二）', price: 14700, type: '个人指导90分钟' },
+  { text: '周2回（高一高二）', price: 28800, type: '个人指导90分钟' },
+  { text: '周3回（高一高二）', price: 42300, type: '个人指导90分钟' },
+  { text: '周4回（高一高二）', price: 55200, type: '个人指导90分钟' },
+  { text: '周5回（高一高二）', price: 67500, type: '个人指导90分钟' },
+
+  { text: '周1回（高一高二）', price: 10400, type: '个人指导60分钟' },
+  { text: '周2回（高一高二）', price: 20400, type: '个人指导60分钟' },
+  { text: '周3回（高一高二）', price: 30000, type: '个人指导60分钟' },
+  { text: '周4回（高一高二）', price: 39200, type: '个人指导60分钟' },
+  { text: '周5回（高一高二）', price: 48000, type: '个人指导60分钟' },
+
+  //个人指导 高三
+  { text: '周1回（高三）', price: 19200, type: '个人指导120分钟' },
+  { text: '周2回（高三）', price: 37600, type: '个人指导120分钟' },
+  { text: '周3回（高三）', price: 55200, type: '个人指导120分钟' },
+  { text: '周4回（高三）', price: 72000, type: '个人指导120分钟' },
+  { text: '周5回（高三）', price: 88000, type: '个人指导120分钟' },
+
+  { text: '周1回（高三）', price: 14700, type: '个人指导90分钟' },
+  { text: '周2回（高三）', price: 28800, type: '个人指导90分钟' },
+  { text: '周3回（高三）', price: 42300, type: '个人指导90分钟' },
+  { text: '周4回（高三）', price: 55200, type: '个人指导90分钟' },
+  { text: '周5回（高三）', price: 67500, type: '个人指导90分钟' },
+
+  { text: '周1回（高三）', price: 10400, type: '个人指导60分钟' },
+  { text: '周2回（高三）', price: 20400, type: '个人指导60分钟' },
+  { text: '周3回（高三）', price: 30000, type: '个人指导60分钟' },
+  { text: '周4回（高三）', price: 39200, type: '个人指导60分钟' },
+  { text: '周5回（高三）', price: 48000, type: '个人指导60分钟' }
 ])
 
 const c_fees = computed(() => {
   return fees.value.filter((fee) => fee.type === selectedFeesType.value)
 })
 
-watch(selectedFeesType, (newValue, oldValue) => {
+watch(selectedFeesType, () => {
   selectedFees.value = {}
 })
 
 const admissionFee = ref(false)
 const materialCosts = ref(false)
-const normalTimes = ref(4)
-const enlistsTimes = ref(4)
-const restTimes = ref(0)
+const normalTimes = ref('4')
+const enlistsTimes = ref('4')
+const restTimes = ref('0')
 
 const totlePrice = computed(() => {
   let total = 0
@@ -75,8 +161,11 @@ const addGrid = () => {
     id: 1,
     lessonName: selectedFees.value.text,
     lessonPrice: selectedFees.value.price,
+    withTax: (selectedFees.value.price * 11) / 10,
     times: enlistsTimes.value,
-    price: (selectedFees.value.price / normalTimes.value) * (enlistsTimes.value - restTimes.value)
+    price:
+      ((selectedFees.value.price * 11) / 10 / parseInt(normalTimes.value)) *
+      (parseInt(enlistsTimes.value) - parseInt(restTimes.value))
   }
   addGridValue(lesson)
 }
@@ -86,7 +175,8 @@ const addAdmissionFee = () => {
     let lesson = {
       id: 98,
       lessonName: '入会费',
-      lessonPrice: 11000,
+      lessonPrice: 10000,
+      withTax: 11000,
       times: 1,
       price: 11000
     }
@@ -105,7 +195,8 @@ const addMaterialCosts = () => {
     let lesson = {
       id: 99,
       lessonName: '材料费',
-      lessonPrice: 4378,
+      lessonPrice: 3980,
+      withTax: 4378,
       times: 1,
       price: 4378
     }
@@ -144,50 +235,36 @@ const addGridValue = (lesson) => {
         placeholder="选择课程"
       />
 
-      <label>课程价格</label>
+      <label>课程价格(稅前)</label>
       <span>{{ selectedFees.price }}</span>
 
+      <label>课程价格(稅後)</label>
+      <span>{{ selectedFees.price == null ? '' : (selectedFees.price * 11) / 10 }}</span>
+
       <label> 课程回数 </label>
-      <InputNumber
+      <InputText
         v-model="normalTimes"
+        type="number"
+        pattern="[0-9]*"
         inputId="normal"
         inputmode="numeric"
-        locale="jp"
-        :pt="{
-          input: {
-            inputmode: 'numeric',
-            pattern: '[0-9]*'
-          }
-        }"
-      ></InputNumber>
-
+      ></InputText>
       <label> 报名回数 </label>
-      <InputNumber
+      <InputText
         v-model="enlistsTimes"
-        inputId="enlists"
+        type="number"
+        pattern="[0-9]*"
         inputmode="numeric"
-        locale="jp"
-        :pt="{
-          input: {
-            inputmode: 'numeric',
-            pattern: '[0-9]*'
-          }
-        }"
-      ></InputNumber>
+      ></InputText>
 
       <label> 休息回数 </label>
-      <InputNumber
+      <InputText
         v-model="restTimes"
+        type="number"
+        pattern="[0-9]*"
         inputId="rest"
         inputmode="numeric"
-        locale="jp"
-        :pt="{
-          input: {
-            inputmode: 'numeric',
-            pattern: '[0-9]*'
-          }
-        }"
-      ></InputNumber>
+      ></InputText>
 
       <label>入会费</label>
       <InputSwitch v-model="admissionFee" inputId="admissionFee" @change="addAdmissionFee" />
@@ -199,9 +276,10 @@ const addGridValue = (lesson) => {
     </div>
 
     <div class="gridArea">
-      <DataTable :value="lessons" tableStyle="min-width: 40rem">
+      <DataTable :value="lessons" tableStyle="min-width: 60rem">
         <Column field="lessonName" header="课程"></Column>
-        <Column field="lessonPrice" header="课程价格"></Column>
+        <Column field="lessonPrice" header="课程价格(稅前)"></Column>
+        <Column field="withTax" header="课程价格(稅後)"></Column>
         <Column field="times" header="报名回数"></Column>
         <Column field="price" header="应缴费用"></Column>
         <Column>
@@ -221,7 +299,7 @@ const addGridValue = (lesson) => {
         </Column>
         <ColumnGroup type="footer">
           <Row>
-            <Column footer="Totals:" :colspan="3" footerStyle="text-align:right" />
+            <Column footer="Totals:" :colspan="4" footerStyle="text-align:right" />
             <Column :footer="totlePrice" />
           </Row>
         </ColumnGroup>
@@ -255,6 +333,9 @@ main {
 .gridArea {
   margin: 0.5em 0.5em;
   width: 20em;
+  @media screen and (min-width: 600px) {
+    width: 70em;
+  }
 }
 
 label {
