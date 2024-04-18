@@ -323,6 +323,13 @@ const addGridValue = (lesson) => {
       <Button label="添加" class="btn" @click="addGrid" />
     </div>
 
+    <Divider></Divider>
+
+    <div class="searchArea">
+      <label for="studentName">学生姓名</label>
+      <InputText id="studentName" type="text" style="width: 15em" />
+    </div>
+
     <div class="gridArea">
       <DataTable :value="lessons" tableStyle="min-width: 60rem">
         <Column field="lessonName" header="课程"></Column>
@@ -391,10 +398,6 @@ label {
   display: inline-flex;
   align-items: center;
   justify-content: left;
-}
-
-.p-inputtext {
-  width: 5em !important;
 }
 
 span {
