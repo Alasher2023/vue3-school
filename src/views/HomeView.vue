@@ -149,12 +149,40 @@ watch(selectedFeesType, () => {
   selectedFees.value = {}
 })
 
+const wddTimesValues = ref([
+  { Text: '0回', Value: 0 },
+  { Text: '1回', Value: 1 },
+  { Text: '2回', Value: 2 },
+  { Text: '3回', Value: 3 },
+  { Text: '4回', Value: 4 },
+  { Text: '5回', Value: 5 },
+  { Text: '6回', Value: 6 },
+  { Text: '7回', Value: 7 },
+  { Text: '8回', Value: 8 },
+  { Text: '9回', Value: 9 },
+  { Text: '10回', Value: 10 },
+  { Text: '11回', Value: 11 },
+  { Text: '12回', Value: 12 },
+  { Text: '13回', Value: 13 },
+  { Text: '14回', Value: 14 },
+  { Text: '15回', Value: 15 },
+  { Text: '16回', Value: 16 },
+  { Text: '17回', Value: 17 },
+  { Text: '18回', Value: 18 },
+  { Text: '19回', Value: 19 },
+  { Text: '20回', Value: 20 },
+  { Text: '21回', Value: 21 },
+  { Text: '22回', Value: 22 },
+  { Text: '23回', Value: 23 },
+  { Text: '24回', Value: 24 }
+])
+
 const admissionFee = ref(false)
 const materialCosts = ref(false)
 const backFlg = ref(false)
-const normalTimes = ref('4')
-const enlistsTimes = ref('4')
-const restTimes = ref('0')
+const normalTimes = ref(4)
+const enlistsTimes = ref(4)
+const restTimes = ref(0)
 
 const totlePrice = computed(() => {
   let total = 0
@@ -168,8 +196,8 @@ const lessons = ref([])
 
 const addGrid = () => {
   let iPrice = Math.ceil(
-    ((((selectedFees.value.price * 11) / 10) * spOffers.value) / parseInt(normalTimes.value)) *
-      (parseInt(enlistsTimes.value) - parseInt(restTimes.value))
+    ((((selectedFees.value.price * 11) / 10) * spOffers.value) / normalTimes.value) *
+      (enlistsTimes.value - restTimes.value)
   )
 
   if (backFlg.value) iPrice = iPrice * -1
@@ -281,7 +309,7 @@ const addGridValue = (lesson) => {
       <label>课程价格(稅後)</label>
       <span>{{ selectedFees.price == null ? '' : (selectedFees.price * 11) / 10 }}</span>
 
-      <label> 课程回数 </label>
+      <!-- <label> 课程回数 </label>
       <InputText
         v-model="normalTimes"
         type="number"
@@ -303,7 +331,34 @@ const addGridValue = (lesson) => {
         pattern="[0-9]*"
         inputId="rest"
         inputmode="numeric"
-      ></InputText>
+      ></InputText> -->
+
+      <label>课程回数</label>
+      <Dropdown
+        id="wddnormalTimes"
+        v-model="normalTimes"
+        :options="wddTimesValues"
+        optionLabel="Text"
+        option-value="Value"
+      />
+
+      <label>报名回数</label>
+      <Dropdown
+        id="wddenlistsTimes"
+        v-model="enlistsTimes"
+        :options="wddTimesValues"
+        optionLabel="Text"
+        option-value="Value"
+      />
+
+      <label>休息回数</label>
+      <Dropdown
+        id="wddrestTimes"
+        v-model="restTimes"
+        :options="wddTimesValues"
+        optionLabel="Text"
+        option-value="Value"
+      />
 
       <Divider></Divider>
       <Divider></Divider>
@@ -376,7 +431,7 @@ main {
   margin: 0.5em 0.5em;
   display: grid;
   grid-template-columns: 7em 14em;
-  gap: 10px;
+  gap: 15px;
 }
 
 .searchArea .btn {
