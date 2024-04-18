@@ -7,6 +7,7 @@ import Column from 'primevue/column'
 import ColumnGroup from 'primevue/columngroup' // optional
 import Row from 'primevue/row' // optional
 import Button from 'primevue/button'
+import Divider from 'primevue/divider'
 
 import { ref, computed, watch } from 'vue'
 
@@ -132,6 +133,13 @@ const fees = ref([
   { text: '周5回（高三）', price: 48000, type: '个人指导60分钟' }
 ])
 
+const specialOffers = ref([
+  { text: '无优惠', value: 1.0 },
+  { text: '95折', value: 0.95 },
+  { text: '9折', value: 0.9 }
+])
+const spOffers = ref(1.0)
+
 const c_fees = computed(() => {
   return fees.value.filter((fee) => fee.type === selectedFeesType.value)
 })
@@ -142,6 +150,7 @@ watch(selectedFeesType, () => {
 
 const admissionFee = ref(false)
 const materialCosts = ref(false)
+const backFlg = ref(false)
 const normalTimes = ref('4')
 const enlistsTimes = ref('4')
 const restTimes = ref('0')
@@ -157,15 +166,34 @@ const totlePrice = computed(() => {
 const lessons = ref([])
 
 const addGrid = () => {
+  let iPrice = Math.ceil(
+    ((((selectedFees.value.price * 11) / 10) * spOffers.value) / parseInt(normalTimes.value)) *
+      (parseInt(enlistsTimes.value) - parseInt(restTimes.value))
+  )
+
+  if (backFlg.value) iPrice = iPrice * -1
+
   let lesson = {
     id: 1,
     lessonName: selectedFees.value.text,
     lessonPrice: selectedFees.value.price,
     withTax: (selectedFees.value.price * 11) / 10,
     times: enlistsTimes.value,
-    price:
-      ((selectedFees.value.price * 11) / 10 / parseInt(normalTimes.value)) *
-      (parseInt(enlistsTimes.value) - parseInt(restTimes.value))
+    spOffer: spOffers.value === 1.0 ? '' : spOffers.value === 0.9 ? '9折' : '95折',
+    price: iPrice
+  }
+  addGridValue(lesson)
+}
+
+const addSpecialOffers = () => {
+  let lesson = {
+    id: 97,
+    lessonName: '介绍优惠',
+    lessonPrice: 1000,
+    withTax: 1000,
+    times: 1,
+    spOffer: '',
+    price: -1000
   }
   addGridValue(lesson)
 }
@@ -178,6 +206,7 @@ const addAdmissionFee = () => {
       lessonPrice: 10000,
       withTax: 11000,
       times: 1,
+      spOffer: '',
       price: 11000
     }
     addGridValue(lesson)
@@ -198,6 +227,7 @@ const addMaterialCosts = () => {
       lessonPrice: 3980,
       withTax: 4378,
       times: 1,
+      spOffer: '',
       price: 4378
     }
     addGridValue(lesson)
@@ -235,6 +265,15 @@ const addGridValue = (lesson) => {
         placeholder="选择课程"
       />
 
+      <label>优惠</label>
+      <Dropdown
+        id="wddSpOffer"
+        v-model="spOffers"
+        :options="specialOffers"
+        optionLabel="text"
+        option-value="value"
+      />
+
       <label>课程价格(稅前)</label>
       <span>{{ selectedFees.price }}</span>
 
@@ -256,7 +295,6 @@ const addGridValue = (lesson) => {
         pattern="[0-9]*"
         inputmode="numeric"
       ></InputText>
-
       <label> 休息回数 </label>
       <InputText
         v-model="restTimes"
@@ -266,11 +304,20 @@ const addGridValue = (lesson) => {
         inputmode="numeric"
       ></InputText>
 
+      <Divider></Divider>
+      <Divider></Divider>
+
+      <label>介紹特典</label>
+      <Button label="添加特典" severity="help" outlined @click="addSpecialOffers" />
+
       <label>入会费</label>
       <InputSwitch v-model="admissionFee" inputId="admissionFee" @change="addAdmissionFee" />
 
       <label>材料费</label>
       <InputSwitch v-model="materialCosts" inputId="materialCosts" @change="addMaterialCosts" />
+
+      <label>返金</label>
+      <InputSwitch v-model="backFlg" />
 
       <Button label="添加" class="btn" @click="addGrid" />
     </div>
@@ -281,6 +328,7 @@ const addGridValue = (lesson) => {
         <Column field="lessonPrice" header="课程价格(稅前)"></Column>
         <Column field="withTax" header="课程价格(稅後)"></Column>
         <Column field="times" header="报名回数"></Column>
+        <Column field="spOffer" header=""></Column>
         <Column field="price" header="应缴费用"></Column>
         <Column>
           <template #body="slotProps">
@@ -299,7 +347,7 @@ const addGridValue = (lesson) => {
         </Column>
         <ColumnGroup type="footer">
           <Row>
-            <Column footer="Totals:" :colspan="4" footerStyle="text-align:right" />
+            <Column footer="总计:" :colspan="5" footerStyle="text-align:right" />
             <Column :footer="totlePrice" />
           </Row>
         </ColumnGroup>
@@ -318,8 +366,8 @@ main {
 .searchArea {
   margin: 0.5em 0.5em;
   display: grid;
-  grid-template-columns: 5em 15em;
-  gap: 20px;
+  grid-template-columns: 7em 13em;
+  gap: 10px;
 }
 
 .searchArea .btn {
