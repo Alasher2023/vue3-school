@@ -324,6 +324,7 @@ const addGridValue = (lesson) => {
     </div>
 
     <Divider></Divider>
+    <br />
 
     <div class="searchArea">
       <label for="studentName">学生姓名</label>
