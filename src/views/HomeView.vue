@@ -29,6 +29,7 @@ const feesType = ref([
 const fees = ref([
   { text: '钢琴幼儿30分钟', price: 7500, type: '乐器' },
   { text: '钢琴初级60分钟', price: 14000, type: '乐器' },
+  { text: '钢琴初级60分钟（2回）', price: 26600, type: '乐器' },
   { text: '钢琴中级60分钟', price: 15500, type: '乐器' },
   { text: '钢琴高级30分钟', price: 9600, type: '乐器' },
   { text: '钢琴高级60分钟', price: 17500, type: '乐器' },
@@ -366,7 +367,7 @@ main {
 .searchArea {
   margin: 0.5em 0.5em;
   display: grid;
-  grid-template-columns: 7em 13em;
+  grid-template-columns: 7em 14em;
   gap: 10px;
 }
 
