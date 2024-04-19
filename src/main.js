@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 
 import 'primevue/resources/themes/aura-light-green/theme.css'
+import 'primeicons/primeicons.css'
 import PrimeVue from 'primevue/config'
 
 const app = createApp(App)
