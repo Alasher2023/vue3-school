@@ -180,7 +180,11 @@ const addFeeItem = () => {
   let type = fees.value.find((fee) => fee.text === feesValue.value.text).type
   let id = 1
   if (type === '其他') {
-    id = 98
+    if (feesValue.value.text === '介绍费') {
+      id = 99
+    } else {
+      id = 98
+    }
   } else {
     if (type === '个人指导120分钟' || type === '个人指导90分钟' || type === '个人指导60分钟') {
       id = parseInt(feesValue.value.text.substring(1, 2))
