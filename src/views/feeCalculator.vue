@@ -24,16 +24,18 @@
           <Button label="新增" outlined class="toolbar-btn" @click="addFeeItem"></Button>
         </template>
         <template #end>
-          <InputGroup>
-            <InputText v-model="otherFeeItem" style="width: 10em" placeholder="其他项目" />
-            <Button label="添加" severity="warning" @click="() => (visible = true)" />
-          </InputGroup>
+          <Button label="添加其他" severity="warning" @click="() => (visible = true)" />
         </template>
       </Toolbar>
 
-      <DataTable :value="lessons" ref="dt" editMode="cell" @cell-edit-complete="onCellEditComplete">
+      <DataTable
+        :value="lessons"
+        tableStyle="min-width: 58rem"
+        editMode="cell"
+        @cell-edit-complete="onCellEditComplete"
+      >
         <Column field="lessonName" header="课程" style=""></Column>
-        <Column field="lessonPrice" header="稅前价格" style="">
+        <Column field="lessonPrice" header="稅前价格">
           <template #body="slotProps">
             {{ parseInt(slotProps.data.lessonPrice).toLocaleString() }}
           </template>
@@ -43,7 +45,9 @@
             {{
               slotProps.data.id === 99
                 ? parseInt(slotProps.data.lessonPrice).toLocaleString()
-                : Math.floor(slotProps.data.lessonPrice * 1.1).toLocaleString()
+                : slotProps.data.lessonPrice >= 0
+                  ? Math.floor(slotProps.data.lessonPrice * 1.1).toLocaleString()
+                  : (Math.floor(Math.abs(slotProps.data.lessonPrice) * 1.1) * -1).toLocaleString()
             }}
           </template>
         </Column>
@@ -96,11 +100,13 @@
                 ? parseInt(slotProps.data.lessonPrice).toLocaleString()
                 : slotProps.data.id === 98
                   ? Math.floor(slotProps.data.lessonPrice * 1.1).toLocaleString()
-                  : Math.ceil(
-                      (Math.floor(slotProps.data.lessonPrice * 1.1) / (4 * slotProps.data.id)) *
-                        (slotProps.data.enlistsTimes * slotProps.data.id -
-                          slotProps.data.restTimes) *
-                        slotProps.data.spOffer
+                  : (
+                      ((Math.floor(Math.abs(slotProps.data.lessonPrice) * 1.1) / 4) *
+                        slotProps.data.id *
+                        slotProps.data.enlistsTimes *
+                        slotProps.data.id -
+                        slotProps.data.restTimes * slotProps.data.spOffer) *
+                      (slotProps.data.lessonPrice > 0 ? 1 : -1)
                     ).toLocaleString()
             }}
           </template>
@@ -137,7 +143,12 @@
   </Card>
 
   <Dialog v-model:visible="visible" header="税前价格" modal :style="{ width: '25rem' }">
-    <InputGroup>
+    <InputGroup style="margin: 5px auto">
+      <Button label="项目" severity="warning" />
+      <InputText v-model="otherFeeItem" style="width: 10em" placeholder="其他项目" />
+    </InputGroup>
+    <InputGroup style="margin: 5px auto">
+      <Button label="费用" severity="warning" />
       <InputText
         v-model="otherFeeValue"
         type="number"
@@ -145,8 +156,8 @@
         inputmode="numeric"
         placeholder="请输入费用"
       />
-      <Button label="确定" severity="warning" @click="addOtherFeeItem" />
     </InputGroup>
+    <Button label="确定" style="width: 100%" severity="" @click="addOtherFeeItem" />
   </Dialog>
 </template>
 
@@ -232,11 +243,14 @@ const totlePrice = computed(() => {
         ? parseInt(lesson.lessonPrice)
         : lesson.id === 98
           ? Math.floor(lesson.lessonPrice * 1.1)
-          : Math.ceil(
-              (Math.floor(lesson.lessonPrice * 1.1) / (4 * lesson.id)) *
-                (lesson.enlistsTimes * lesson.id - lesson.restTimes) *
-                lesson.spOffer
-            )
+          : lesson.lessonPrice >= 0
+            ? (Math.floor(lesson.lessonPrice * 1.1) / (4 * lesson.id)) *
+              (lesson.enlistsTimes * lesson.id - lesson.restTimes) *
+              lesson.spOffer
+            : (Math.floor(Math.abs(lesson.lessonPrice) * 1.1) / (4 * lesson.id)) *
+              (lesson.enlistsTimes * lesson.id - lesson.restTimes) *
+              lesson.spOffer *
+              -1
 
     total += price
   })
