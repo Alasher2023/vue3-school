@@ -98,38 +98,43 @@ const addOtherFeeItem = () => {
 </script>
 
 <template>
-  <div class="div-dataview" style="margin-top: 30px">
-    <label>课程类别</label>
-    <Dropdown v-model="feesTypeValue" :options="feesType"></Dropdown>
-    <label>课程名</label>
-    <Dropdown
-      v-model="feesValue"
-      :options="c_fees"
-      option-label="text"
-      placeholder="请选择课程"
-    ></Dropdown>
-    <div>
-      <Button icon="pi pi-box" @click="visible = true" style="margin: auto 5px"></Button>
-      <Button
-        icon="pi pi-external-link"
-        @click="grid_visible = true"
-        style="margin: auto 5px"
-      ></Button>
-    </div>
+  <Card style="width: 100%; overflow: hidden">
+    <template #content>
+      <div class="div-dataview">
+        <label>课程类别</label>
+        <Dropdown v-model="feesTypeValue" :options="feesType"></Dropdown>
+        <label>课程名</label>
+        <Dropdown
+          v-model="feesValue"
+          :options="c_fees"
+          option-label="text"
+          placeholder="请选择课程"
+        ></Dropdown>
+        <div>
+          <Button icon="pi pi-box" @click="visible = true"></Button>
+          <Button
+            icon="pi pi-external-link"
+            @click="grid_visible = true"
+            style="margin: auto 5px"
+          ></Button>
+        </div>
 
-    <Button label="新增" outlined @click="addFeeItem"></Button>
-  </div>
-
-  <div class="div-info">
-    <InputText placeholder="学生姓名" v-model="studentName" />
-    <b style="margin: auto; font-size: x-large">总价:</b>
-    <b style="margin: auto; font-size: x-large">{{ totalPrice.toLocaleString() }}</b>
-  </div>
+        <Button label="新增" outlined @click="addFeeItem"></Button>
+      </div>
+    </template>
+    <template #footer>
+      <div class="div-info">
+        <InputText placeholder="学生姓名" v-model="studentName" />
+        <b style="margin: auto; font-size: x-large">总价:</b>
+        <b style="margin: auto; font-size: x-large">{{ totalPrice.toLocaleString() }}</b>
+      </div>
+    </template>
+  </Card>
 
   <DataView
     :value="data"
     v-show="data.length > 0 ? true : false"
-    style="height: 30rem; overflow: auto; margin-top: 20px"
+    style="height: 30rem; overflow: auto"
   >
     <template #list="slotProps">
       <div v-for="(item, index) in slotProps.items" :key="index">
@@ -267,6 +272,6 @@ const addOtherFeeItem = () => {
 .div-info {
   margin: 10px auto;
   display: grid;
-  grid-template-columns: 40% 20% auto;
+  grid-template-columns: 40% 25% auto;
 }
 </style>
