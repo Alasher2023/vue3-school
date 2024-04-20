@@ -129,7 +129,7 @@ const addOtherFeeItem = () => {
   <DataView
     :value="data"
     v-show="data.length > 0 ? true : false"
-    style="height: 35rem; overflow: auto; margin-top: 20px"
+    style="height: 25rem; overflow: auto; margin-top: 20px"
   >
     <template #list="slotProps">
       <div v-for="(item, index) in slotProps.items" :key="index">
