@@ -223,7 +223,7 @@ const addOtherFeeItem = () => {
     <Button label="确定" style="width: 100%" severity="" @click="addOtherFeeItem" />
   </Dialog>
 
-  <Dialog v-model:visible="grid_visible" maximizable>
+  <Dialog v-model:visible="grid_visible" maximizable modal>
     <template #header>
       <span style="margin: auto">{{ studentName }}</span>
     </template>
