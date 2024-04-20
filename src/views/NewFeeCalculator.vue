@@ -129,7 +129,7 @@ const addOtherFeeItem = () => {
   <DataView
     :value="data"
     v-show="data.length > 0 ? true : false"
-    style="height: 40rem; overflow: auto; margin-top: 20px"
+    style="height: 35rem; overflow: auto; margin-top: 20px"
   >
     <template #list="slotProps">
       <div v-for="(item, index) in slotProps.items" :key="index">
@@ -224,12 +224,12 @@ const addOtherFeeItem = () => {
     </template>
     <DataTable :value="data">
       <Column field="lessonName" header="课程"></Column>
-      <Column field="lessonPrice" header="课程价格(稅前)">
+      <Column field="lessonPrice" header="税前价格">
         <template #body="slotProps">
           {{ slotProps.data.lessonPrice.toLocaleString() }}
         </template>
       </Column>
-      <Column field="lessonTaxPrice" header="课程价格(稅後)">
+      <Column field="lessonTaxPrice" header="税后价格">
         <template #body="slotProps">
           {{ slotProps.data.lessonTaxPrice.toLocaleString() }}
         </template></Column
