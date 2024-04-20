@@ -10,6 +10,11 @@ const router = createRouter({
     },
     {
       path: '/',
+      name: 'NewfeeCalculator',
+      component: () => import('@/views/NewFeeCalculator.vue')
+    },
+    {
+      path: '/oldCal',
       name: 'feeCalculator',
       component: () => import('@/views/feeCalculator.vue')
     }
