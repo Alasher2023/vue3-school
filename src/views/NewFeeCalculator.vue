@@ -16,7 +16,7 @@ import { ref, watch, computed } from 'vue'
 import { feesType, fees, specialOffers, wddTimesValues } from '@/data/dropdownData.js'
 
 const data = ref([])
-const feesTypeValue = ref('乐器')
+const feesTypeValue = ref('音乐')
 const feesValue = ref('')
 const c_fees = computed(() => {
   return fees.value.filter((fee) => fee.type === feesTypeValue.value)
@@ -102,13 +102,14 @@ const addOtherFeeItem = () => {
     <template #content>
       <div class="div-dataview">
         <label>课程类别</label>
-        <Dropdown v-model="feesTypeValue" :options="feesType"></Dropdown>
+        <Dropdown v-model="feesTypeValue" :options="feesType" pt:root:class="dropdown"></Dropdown>
         <label>课程名</label>
         <Dropdown
           v-model="feesValue"
           :options="c_fees"
           option-label="text"
           placeholder="请选择课程"
+          pt:root:class="dropdown"
         ></Dropdown>
         <div>
           <Button icon="pi pi-box" @click="visible = true"></Button>
@@ -273,5 +274,8 @@ const addOtherFeeItem = () => {
   margin: 10px auto;
   display: grid;
   grid-template-columns: 40% 25% auto;
+}
+.dropdown {
+  width: 13.5em;
 }
 </style>
