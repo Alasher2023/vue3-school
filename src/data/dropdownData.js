@@ -13,12 +13,12 @@ export const feesType = ref([
 ])
 
 export const fees = ref([
-  { text: '钢琴幼儿0.5h', price: 7500, type: '音乐' },
-  { text: '钢琴初级1h', price: 14000, type: '音乐' },
-  { text: '钢琴初级1h（2回）', price: 26600, type: '音乐' },
-  { text: '钢琴中级1h', price: 15500, type: '音乐' },
-  { text: '钢琴高级0.5h', price: 9600, type: '音乐' },
-  { text: '钢琴高级1h', price: 17500, type: '音乐' },
+  // { text: '钢琴幼儿0.5h', price: 7500, type: '音乐' },
+  // { text: '钢琴初级1h', price: 14000, type: '音乐' },
+  // { text: '钢琴初级1h（2回）', price: 26600, type: '音乐' },
+  // { text: '钢琴中级1h', price: 15500, type: '音乐' },
+  // { text: '钢琴高级0.5h', price: 9600, type: '音乐' },
+  // { text: '钢琴高级1h', price: 17500, type: '音乐' },
 
   { text: '10月-钢琴幼儿0.5h', price: 7900, type: '音乐' },
   { text: '10月-钢琴幼儿0.5h（2回）', price: 15010, type: '音乐' },
