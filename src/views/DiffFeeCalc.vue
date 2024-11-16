@@ -17,7 +17,7 @@ import { feesType, fees, wddTimesValues } from '@/data/dropdownData.js'
  * 计算费用
  */
 const data = ref([])
-const feesTypeValue = ref('音乐')
+const feesTypeValue = ref('钢琴')
 const feesValue = ref('')
 const c_fees = computed(() => {
   return fees.value.filter((fee) => fee.type === feesTypeValue.value)
