@@ -9,7 +9,7 @@ const router = createRouter({
       component: () => import('../views/HomeView.vue')
     },
     {
-      path: '/',
+      path: '/new',
       name: 'NewfeeCalculator',
       component: () => import('@/views/NewFeeCalculator.vue')
     },
@@ -17,6 +17,11 @@ const router = createRouter({
       path: '/oldCal',
       name: 'feeCalculator',
       component: () => import('@/views/feeCalculator.vue')
+    },
+    {
+      path: '/',
+      name: 'Diff',
+      component: () => import('../views/DiffFeeCalc.vue')
     }
   ]
 })
